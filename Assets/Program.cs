@@ -5,6 +5,8 @@ using System.Threading;
 using System.ComponentModel;
 using System.Net;
 using System.Net.Sockets;
+using System.IO;
+using LitJson;
 
 public class Program : MonoBehaviour {
 
@@ -13,13 +15,15 @@ public class Program : MonoBehaviour {
     
 
     public SocketServer sockerServer = new SocketServer();
-    BackgroundWorker checkConnection = new BackgroundWorker(); 
+    BackgroundWorker checkConnection = new BackgroundWorker();
+    
 	// Use this for initialization
 	void Start () {
 
-        StartCoroutine(LocalIPCheck());
-
+        
        
+        StartCoroutine(LocalIPCheck());
+        DontDestroyOnLoad(gameObject);
 	}
 
     IEnumerator LocalIPCheck()
@@ -51,8 +55,7 @@ public class Program : MonoBehaviour {
             yield return null;
         }
     }
-
-
+   
 	// Update is called once per frame
 	void Update () {
 	
