@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.IO;
 using LitJson;
+using Excel;
 
 public class Program : MonoBehaviour {
 
@@ -20,7 +21,18 @@ public class Program : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-        
+        FileStream stream = File.Open("a.xls", FileMode.Open, FileAccess.Read);
+        IExcelDataReader exc = ExcelReaderFactory.CreateBinaryReader(stream);
+        System.Data.DataSet mResultSets = exc.AsDataSet();
+
+        for (int i = 0; i < mResultSets.Tables[0].Columns.Count; i++)
+        {
+            for (int j = 0; j < mResultSets.Tables[0].Rows.Count; j++)
+            {
+                Debug.Log((mResultSets.Tables[0].Rows[j][i]));
+            }
+
+        }
        
         StartCoroutine(LocalIPCheck());
         DontDestroyOnLoad(gameObject);
