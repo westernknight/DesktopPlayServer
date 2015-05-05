@@ -52,17 +52,10 @@
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
-    <Reference Include="Excel">
-      <HintPath>Assets\ExcelDataReader\ExcelDataReader\Excel.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>Assets\ExcelDataReader\ExcelDataReader\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data">
-      <HintPath>Assets\ExcelDataReader\System.Data.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CardsConfig.cs" />
+    <Compile Include="Assets\CardsInfoActivity.cs" />
     <Compile Include="Assets\LitJson\IJsonWrapper.cs" />
     <Compile Include="Assets\LitJson\JsonData.cs" />
     <Compile Include="Assets\LitJson\JsonException.cs" />
@@ -207,6 +200,7 @@
     <Compile Include="Assets\NGUI\Scripts\UI\UITexture.cs" />
     <Compile Include="Assets\NGUI\Scripts\UI\UITooltip.cs" />
     <Compile Include="Assets\NGUI\Scripts\UI\UIViewport.cs" />
+    <Compile Include="Assets\OutputActivity.cs" />
     <Compile Include="Assets\Program.cs" />
     <Compile Include="Assets\Sessions.cs" />
     <Compile Include="Assets\SessionsActivity.cs" />
@@ -256,6 +250,8 @@
     <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Packed 2.shader" />
     <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Packed 3.shader" />
     <None Include="Assets\NGUI\Resources\Shaders\Unlit - Transparent Packed.shader" />
+    <None Include="Assets\StreamingAssets\a.xml" />
+    <None Include="Assets\StreamingAssets\session.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2013\UnityVS.CSharp.targets" />
 </Project>

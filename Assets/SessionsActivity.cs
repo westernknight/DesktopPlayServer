@@ -7,124 +7,118 @@ public class SessionsActivity : MonoBehaviour {
 
     LitJson.JsonData sessionData;
 
+    public Sessions sessions;
 
-    public GameObject switchBox;
-    public GameObject fieldBox;
-    public UIRoot root;
-    List<GameObject> switchBoxList = new List<GameObject>();
-    List<GameObject> fieldBoxList = new List<GameObject>();
-    int elementCount = 0;
+    public UIInput 游戏开始手牌数量;
+    public UIInput 发牌数;
+    public UIInput 出牌数量最大值;
+    public UIInput 出牌数量最小值;
+    public UIToggle 牌堆2是否激活;
+    public UIToggle 混合牌堆1跟2;
+    public UIToggle 循环发牌;
+
+    bool init = false;
 	// Use this for initialization
 	void Start () {
-        var documents = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
-        FileInfo fi = new FileInfo(Path.Combine(documents, "sessions.txt"));
-        FileStream sessionFile = fi.Open(FileMode.OpenOrCreate);
-        using (StreamReader sr = new StreamReader(sessionFile))
-        {
-            string sessionJson = sr.ReadToEnd();
-            if (string.IsNullOrEmpty(sessionJson))
-            {
-                sessionJson = JsonMapper.ToJson(new Sessions());
-            }
-            sessionData = LitJson.JsonMapper.ToObject(sessionJson);
-        }
 
-        sessionFile.Close();
-
-        sessionFile = fi.Open(FileMode.OpenOrCreate);
-        using (StreamWriter sw = new StreamWriter(sessionFile))
+        try
         {
-            sw.WriteLine(sessionData.ToJson());
-        }
-        sessionFile.Close();
+            FileStream stream = File.Open(System.IO.Path.Combine(Application.streamingAssetsPath, "session.txt"), FileMode.Open, FileAccess.Read);
 
-        foreach (string key in ((IDictionary)sessionData).Keys)
-        {
-            if (sessionData[key].IsInt)
+
+            using (StreamReader sr = new StreamReader(stream))
             {
-                CreateNumberEditSession(key, (int)sessionData[key]);
+                string sessionJson = sr.ReadToEnd();
+                if (string.IsNullOrEmpty(sessionJson))
+                {
+                    sessionJson = JsonMapper.ToJson(new Sessions());
+                }
+                sessionData = LitJson.JsonMapper.ToObject(sessionJson);
+
+                sessions = JsonMapper.ToObject<Sessions>(sessionData.ToJson());
+
+                游戏开始手牌数量.value = sessions.游戏开始手牌数量.ToString();
+                发牌数.value = sessions.发牌数.ToString();
+                出牌数量最大值.value = sessions.出牌数量最大值.ToString();
+                出牌数量最小值.value = sessions.出牌数量最小值.ToString();
+                牌堆2是否激活.value = sessions.牌堆2是否激活;
+                混合牌堆1跟2.value = sessions.混合牌堆1跟2;
+                循环发牌.value = sessions.循环发牌;
             }
-            if (sessionData[key].IsBoolean)
-            {
-                CreateBoolSwitchSession(key, (bool)sessionData[key]);
-            }
+            init = true;
         }
+        catch (System.Exception ex)
+        {
+
+            Debug.Log(ex);
+
+
+            sessionData = JsonMapper.ToObject(JsonMapper.ToJson(sessions));
+
+            Save();
+
+        }
+       
+
+       
 
 	}
-    void CreateNumberEditSession(string title, int defaultValue)
+    public void OnChange游戏开始手牌数量(string field)
     {
-        
-        //to do add item
-        GameObject field = GameObject.Instantiate(fieldBox) as GameObject;
-        field.transform.parent = root.transform;
-        field.transform.localScale = Vector3.one;
-        fieldBoxList.Add(field);
-        field.transform.localPosition = new Vector3(0, elementCount * -34 + 100, 0);
-
-        field.transform.GetChild(0).gameObject.GetComponent<UIInput>().value = defaultValue.ToString();
-        field.transform.GetChild(1).gameObject.GetComponent<UILabel>().text = title;
-        //to do gui change
-        /*et.TextChanged += (sender, e) =>
-        {
-            string change = "";
-            foreach (var item in e.Text)
-            {
-                change += item;
-            }
-            if (change != "")
-            {
-                sessionData[title] = int.Parse(change);
-            }
-            else
-            {
-                sessionData[title] = 0;
-            }
-            Save();
-        };*/
-
-        elementCount++;
+        Debug.Log("OnChange游戏开始手牌数量" + field);
+        sessions.游戏开始手牌数量 = int.Parse(field);
+        Save();
     }
-    public void NumberEditSessionChanged()
+    public void OnChange发牌数(string field)
     {
-        
+        Debug.Log("OnChange发牌数" + field);
+        sessions.发牌数 = int.Parse(field);
+        Save();
     }
-
-
-
-    void CreateBoolSwitchSession(string title, bool defaultValue)
+    public void OnChange出牌数量最大值(string field)
     {
- 
-        GameObject switchObject = GameObject.Instantiate(switchBox) as GameObject;
-        switchObject.transform.parent = root.transform;
-        switchObject.transform.localScale = Vector3.one;
-        switchBoxList.Add(switchObject);
-        switchObject.transform.localPosition = new Vector3(0, elementCount * -34 + 100, 0);
-
-        switchObject.transform.GetChild(0).gameObject.GetComponent<UIToggle>().value = defaultValue;
-        switchObject.transform.GetChild(1).gameObject.GetComponent<UILabel>().text = title;
-        //         Switch sw = new Switch(this);
-        //         sw.Checked = defaultValue;
-        //         sw.Text = title;
-        //         sw.CheckedChange += (sender, e) =>
-        //         {
-        //             sessionData[title] = e.IsChecked;
-        //             Save();
-        //         };
-        //         principalview.AddView(sw);
-
-        elementCount++;
+        Debug.Log("OnChange出牌数量最大值" + field);
+        sessions.出牌数量最大值 = int.Parse(field);
+        Save();
+    }
+    public void OnChange出牌数量最小值(string field)
+    {
+        Debug.Log("OnChange出牌数量最小值" + field);
+        sessions.出牌数量最小值 = int.Parse(field);
+        Save();
+    }
+    public void OnChange牌堆2是否激活(bool field)
+    {
+        Debug.Log("OnChange牌堆2是否激活" + field);
+        sessions.牌堆2是否激活 = field;
+        Save();
+    }
+    public void OnChange混合牌堆1跟2(bool field)
+    {
+        Debug.Log("OnChange混合牌堆1跟2" + field);
+        sessions.混合牌堆1跟2 = field;
+        Save();
+    }
+    public void OnChange循环发牌(bool field)
+    {
+        Debug.Log("OnChange循环发牌" + field);
+        sessions.循环发牌 = field;
+        Save();
     }
     void Save()
     {
-        var documents = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
-
-        FileInfo fi = new FileInfo(Path.Combine(documents, "sessions.txt"));
-        FileStream sessionFile = fi.Open(FileMode.OpenOrCreate);
-        using (StreamWriter sw = new StreamWriter(sessionFile))
+        //var documents = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
+        if (init)
         {
-            sw.WriteLine(sessionData.ToJson());
+            FileInfo fi = new FileInfo(System.IO.Path.Combine(Application.streamingAssetsPath, "session.txt"));
+            FileStream sessionFile = fi.Open(FileMode.OpenOrCreate);
+            using (StreamWriter sw = new StreamWriter(sessionFile))
+            {
+                sw.WriteLine(sessionData.ToJson());
+            }
+            sessionFile.Close();
         }
-        sessionFile.Close();
+        
     }
     public LitJson.JsonData GetSessionJsonData()
     {

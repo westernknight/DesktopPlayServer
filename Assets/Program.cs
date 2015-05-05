@@ -7,36 +7,48 @@ using System.Net;
 using System.Net.Sockets;
 using System.IO;
 using LitJson;
-using Excel;
-
-public class Program : MonoBehaviour {
+using System.Xml;
+public class Program : MonoBehaviour
+{
 
 
     public UILabel ipShow;
-    
+
 
     public SocketServer sockerServer = new SocketServer();
     BackgroundWorker checkConnection = new BackgroundWorker();
-    
-	// Use this for initialization
-	void Start () {
 
-        FileStream stream = File.Open("a.xls", FileMode.Open, FileAccess.Read);
-        IExcelDataReader exc = ExcelReaderFactory.CreateBinaryReader(stream);
-        System.Data.DataSet mResultSets = exc.AsDataSet();
+    // Use this for initialization
+    void Start()
+    {
 
-        for (int i = 0; i < mResultSets.Tables[0].Columns.Count; i++)
-        {
-            for (int j = 0; j < mResultSets.Tables[0].Rows.Count; j++)
-            {
-                Debug.Log((mResultSets.Tables[0].Rows[j][i]));
-            }
+        Debug.Log("yes ================================================= ok");
 
-        }
+
+        Debug.Log(Application.persistentDataPath);
+        Debug.Log(Application.dataPath);
+        Debug.Log(Application.streamingAssetsPath);
+
+        Debug.Log("test =================================================");
+
        
+
+
+
+        //         IExcelDataReader exc = ExcelReaderFactory.CreateBinaryReader(stream);
+        //         System.Data.DataSet mResultSets = exc.AsDataSet();
+        // 
+        //         for (int i = 0; i < mResultSets.Tables[0].Columns.Count; i++)
+        //         {
+        //             for (int j = 0; j < mResultSets.Tables[0].Rows.Count; j++)
+        //             {
+        //                 Debug.Log((mResultSets.Tables[0].Rows[j][i]));
+        //             }
+        // 
+        //         }
         StartCoroutine(LocalIPCheck());
         DontDestroyOnLoad(gameObject);
-	}
+    }
 
     IEnumerator LocalIPCheck()
     {
@@ -67,11 +79,12 @@ public class Program : MonoBehaviour {
             yield return null;
         }
     }
-   
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
     bool IsNeworkConnect()
     {
         if (Application.internetReachability == NetworkReachability.NotReachable)//无网络
@@ -90,6 +103,6 @@ public class Program : MonoBehaviour {
     }
     void OnApplicationQuit()
     {
-      
+
     }
 }
